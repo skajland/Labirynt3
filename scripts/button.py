@@ -4,7 +4,8 @@ pygame.init()
 
 class Button:
 
-    def __init__(self, what_to_say, pos, font_size, default_color, button_hovering_color, button_pressed_color):
+    def __init__(self, what_to_say, pos, font_size, default_color, button_hovering_color, button_pressed_color, *func_arguments):
+        self.func_arguments = func_arguments
         self.default_color = default_color
         self.button_hovering_color = button_hovering_color
         self.button_pressed_color = button_pressed_color
@@ -22,32 +23,23 @@ class Button:
         self.button_state = "None"
         self.mouse_down = False
 
-    def collision(self, event, func):
-        if not self.isimage:
-            if self.rect.collidepoint(pygame.mouse.get_pos()):
-                self.button_state = "Hovering"
-                self.collision_checker(event, func)
-            else:
-                self.button_state = "None"
-
+    def collision(self, func):
+        if self.rect.collidepoint(pygame.mouse.get_pos()):
+            self.button_state = "Hovering"
+            self.collision_checker(func)
         else:
-            if self.rect.collidepoint(pygame.mouse.get_pos()):
-                self.button_state = "Hovering"
-                self.collision_checker(event, func)
-            else:
-                self.button_state = "None"
+            self.button_state = "None"
 
-    def collision_checker(self, event, func, *func_arguments):
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if len(func_arguments) > 0:
-                func(func_arguments)
+    def collision_checker(self, func):
+        if pygame.mouse.get_pressed()[0]:
+            if len(self.func_arguments) > 0:
+                func(self.func_arguments)
             else:
                 func()
             self.button_state = "Pressed"
             self.mouse_down = True
-
-        if event.type == pygame.MOUSEBUTTONUP:
-            self.mouse_down = False
+            return
+        self.mouse_down = False
 
     def render(self, screen):
 

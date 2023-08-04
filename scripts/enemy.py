@@ -29,8 +29,8 @@ class Enemy:
         return new_enemy
 
     def move_to_player(self):
-        self.enemy_pos.x += math.cos(self.angle) * self.speed
-        self.enemy_pos.y += math.sin(self.angle) * self.speed
+        self.enemy_pos.x += math.cos(self.angle) * self.speed * gamestate.difficulty_multiplier
+        self.enemy_pos.y += math.sin(self.angle) * self.speed * gamestate.difficulty_multiplier
 
     def collision(self, player):
         mask = pygame.mask.from_surface(self.image_rot)
@@ -38,9 +38,7 @@ class Enemy:
         if overlap_mask.count() > 0:
             gamestate.game_state = "DeathScreen"
 
-    def update(self, level_maps, player):
-        if self.enemy_pos is None:
-            self.enemy_pos = pygame.Vector2(self.pos[0] * 86, self.pos[1] * 86)
+    def update(self, _, player):
         self.point_at_player(player)
         self.move_to_player()
         self.collision(player)
@@ -50,5 +48,6 @@ class Enemy:
     def render(self, screen):
         screen.blit(self.image_rot, self.rect)
 
-    def start(self, opt_lvl_map):
-        pass
+    def start(self, _):
+        if self.enemy_pos is None:
+            self.enemy_pos = pygame.Vector2(self.pos[0] * 86, self.pos[1] * 86)

@@ -40,7 +40,20 @@ def render_level(screen):
         level.render(screen)
 
 
-def start(lvl_map, opt_lvl_map):
+def start(lvl_map, opt_lvl_map, data):
+    global player
+    for i, level in enumerate(lvl_map):
+        for j, level_item_list in enumerate(level):
+            for level_item in level_item_list:
+                if level_item is not None:
+                    if type(level_item) == Player:
+                        player = level_item
+                        camera.offset = pygame.math.Vector2(
+                            camera.screen_size[0] / 2 - player.image.get_width() / 2 - (j * 86 + camera.offset.x) + data[0],
+                            camera.screen_size[1] / 2 - player.image.get_height() / 2 - (i * 86 + camera.offset.y) + data[1])
+                        player.rect.topleft += camera.offset
+                        break
+
     for i, level in enumerate(lvl_map):
         for j, level_item_list in enumerate(level):
             for level_item in level_item_list:
@@ -53,10 +66,11 @@ def start(lvl_map, opt_lvl_map):
 def update():
     for level_item in level_maps[1]:
         level_item.update(level_maps, player)
+    camera.box_camera(player.rect)
 
 
 def load_map():
-    global player, background_color
+    global player, background_color, level_maps
     data = level_data()
     camera.left, camera.top, camera.right, camera.bottom = data[2]
     background_color = data[1]
@@ -66,15 +80,9 @@ def load_map():
                            level_list if level_block is not None]
     sorted_level_map = sorted((x for x in optimized_level_map if x is not None), key=lambda x: x.layer)
     camera.offset = pygame.Vector2()
-    start(level_map1, optimized_level_map)
-    for level_item2 in optimized_level_map:
-        if type(level_item2) == Player:
-            player = level_item2
-            camera.offset = pygame.math.Vector2(camera.screen_size[0] / 2 - player.image.get_width() / 2 - player.rect.x + data[0][0],
-                                                camera.screen_size[1] / 2 - player.image.get_height() / 2 - player.rect.y + data[0][1])
-            player.rect.topleft += camera.offset
-            break
-    return level_map1, optimized_level_map, sorted_level_map
+    start(level_map1, optimized_level_map, data[0])
+    level_maps = level_map1, optimized_level_map, sorted_level_map
+    update()
 
 
 def level_data():

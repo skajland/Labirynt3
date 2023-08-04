@@ -21,7 +21,7 @@ class Block:
     def render(self, screen):
         screen.blit(self.img, self.rect)
 
-    def start(self, opt_lvl_map):
+    def start(self, _):
         pass
 
 
@@ -30,7 +30,7 @@ class WinBlock(Block):
     def update(self, level_maps, player):
         super().update(level_maps, player)
         if self.was_on_item:
-            leveloader.level_maps = leveloader.load_map()
+            leveloader.load_map()
         
     def copy(self):
         new_block = WinBlock(self.img, self.walkable, self.layer)

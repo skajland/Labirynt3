@@ -1,5 +1,4 @@
 import pygame
-import camera
 
 keys_pressed = []
 
@@ -71,7 +70,6 @@ class Player:
 
     def update(self, level_maps, player):
         self.movement(level_maps[2])
-        camera.box_camera(self.rect)
 
-    def start(self, opt_lvl_map):
+    def start(self, _):
         pass

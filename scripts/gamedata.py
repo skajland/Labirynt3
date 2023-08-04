@@ -6,7 +6,7 @@ import pygame
 
 items_dict = {0: None,
               1: block.Block(pygame.transform.scale(pygame.image.load("res/blocks/grass.png"), (86, 86)), True, 1),
-              2: Enemy((72, 92), 2),
+              2: Enemy((72, 92), 2.5),
               3: Player(),
               4: block.Key(pygame.transform.scale(pygame.image.load("res/blocks/key.png"), (86, 86)), True, 2, 'Green'),
               5: block.EntranceBlock(pygame.transform.scale(pygame.image.load("res/blocks/entrance.png"), (86, 86)), False, 3, 'Green'),
