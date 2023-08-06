@@ -3,6 +3,8 @@ import gamedata
 import pygame
 from player import Player
 background_color = (105, 200, 75)
+difficulty_multiplier = 1
+current_difficulty = 1  # 0 = easy 1 = mid 2 = hard
 
 
 def copy_item(original_item):
@@ -70,10 +72,11 @@ def update():
 
 
 def load_map():
-    global player, background_color, level_maps
+    global player, background_color, level_maps, difficulty_multiplier
     data = level_data()
     camera.left, camera.top, camera.right, camera.bottom = data[2]
     background_color = data[1]
+    difficulty_multiplier = [difficulty_data / 100 for difficulty_data in data[3]]
     level_map1 = level_loader(gamedata.levels[gamedata.current_level], gamedata.items_dict)
     gamedata.current_level += 1
     optimized_level_map = [level_block for level_row in level_map1 for level_list in level_row for level_block in

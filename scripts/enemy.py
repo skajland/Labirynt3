@@ -32,8 +32,8 @@ class Enemy:
         return new_enemy
 
     def move_to_player(self, angle):
-        self.enemy_pos.x += math.cos(angle) * self.speed * gamestate.difficulty_multiplier
-        self.enemy_pos.y += math.sin(angle) * self.speed * gamestate.difficulty_multiplier
+        self.enemy_pos.x += math.cos(angle) * self.speed * leveloader.difficulty_multiplier[leveloader.current_difficulty]
+        self.enemy_pos.y += math.sin(angle) * self.speed * leveloader.difficulty_multiplier[leveloader.current_difficulty]
 
     def collision(self, player):
         mask = pygame.mask.from_surface(self.image_rot)

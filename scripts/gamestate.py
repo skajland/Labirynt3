@@ -6,7 +6,6 @@ import gamedata
 import leveloader
 
 game_state = "MainMenu"
-difficulty_multiplier = 1
 
 
 class Running:
@@ -33,10 +32,10 @@ class MainMenu:
                                        pygame.Vector2(camera.screen_size[0] / 2, camera.screen_size[1] / 2 + 240), 128)
     DifficultyButtons = [
         usefull.create_button("Easy", pygame.Vector2(camera.screen_size[0] / 2 - 250, camera.screen_size[1] / 2), 96,
-                              0.7),
+                              0),
         usefull.create_button("Medium", pygame.Vector2(camera.screen_size[0] / 2, camera.screen_size[1] / 2), 96, 1),
         usefull.create_button("Hard", pygame.Vector2(camera.screen_size[0] / 2 + 250, camera.screen_size[1] / 2), 96,
-                              1.35)]
+                              2)]
     workshop_enabled = False
 
     @staticmethod
@@ -68,8 +67,7 @@ class MainMenu:
 
     @staticmethod
     def change_difficulty(*multiplier):
-        global difficulty_multiplier
-        difficulty_multiplier = multiplier[0]
+        leveloader.current_difficulty = multiplier[0]
 
     @staticmethod
     def render(screen):
@@ -101,7 +99,6 @@ class MainMenu:
 
 class WorkShop:
     sub_folders = []
-    prev_mouse_pos = pygame.mouse.get_pos()
     workshop_offset = pygame.Vector2()
 
     @staticmethod
