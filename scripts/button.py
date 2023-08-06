@@ -32,10 +32,7 @@ class Button:
 
     def collision_checker(self, func):
         if pygame.mouse.get_pressed()[0]:
-            if len(self.func_arguments) > 0:
-                func(self.func_arguments)
-            else:
-                func()
+            func(*self.func_arguments)
             self.button_state = "Pressed"
             self.mouse_down = True
             return

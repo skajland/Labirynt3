@@ -1,5 +1,5 @@
 import pygame
-
+import camera
 keys_pressed = []
 
 

@@ -25,6 +25,7 @@ def update():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 leveloader.load_map()
+        gamestate.WorkShop.event_update(event)
 
     if gamestate.game_state == "Running":
         gamestate.Running.update()
