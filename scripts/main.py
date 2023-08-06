@@ -28,7 +28,7 @@ def update():
         gamestate.WorkShop.event_update(event)
 
     if gamestate.game_state == "Running":
-        gamestate.Running.update()
+        gamestate.Running.update()t
     elif gamestate.game_state == "MainMenu":
         gamestate.MainMenu.update()
     elif gamestate.game_state == "DeathScreen":
