@@ -5,6 +5,7 @@ from player import Player
 background_color = (105, 200, 75)
 difficulty_multiplier = 1
 current_difficulty = 1  # 0 = easy 1 = mid 2 = hard
+destroy = []
 
 
 def copy_item(original_item):
@@ -39,36 +40,45 @@ def level_loader(file_raw, object_dict):
 
 def render_level(screen):
     for level in level_maps[2]:
+        if hasattr(level, 'img'):
+            if level.img is None:
+                continue
         level.render(screen)
 
 
-def start(lvl_map, opt_lvl_map, data):
+def start(lvl_map, opt_lvl_map, sorted_lvl_map, data):
     global player
     for i, level in enumerate(lvl_map):
         for j, level_item_list in enumerate(level):
-            for level_item in level_item_list:
-                if level_item is not None:
-                    if type(level_item) == Player:
-                        player = level_item
-                        camera.offset = pygame.math.Vector2(
-                            camera.screen_size[0] / 2 - player.image.get_width() / 2 - (j * 86 + camera.offset.x) + data[0],
-                            camera.screen_size[1] / 2 - player.image.get_height() / 2 - (i * 86 + camera.offset.y) + data[1])
-                        player.rect.topleft += camera.offset
-                        break
+            for k, level_item in enumerate(level_item_list):
+                if level_item is None or type(level_item) != Player:
+                    continue
+                opt_lvl_map.remove(level_item)
+                player = level_item
+                camera.offset = pygame.math.Vector2(
+                    camera.screen_size[0] / 2 - player.image.get_width() / 2 - (j * 86 + camera.offset.x) + data[0],
+                    camera.screen_size[1] / 2 - player.image.get_height() / 2 - (i * 86 + camera.offset.y) + data[1])
+                player.rect.topleft += camera.offset
+                break
 
     for i, level in enumerate(lvl_map):
         for j, level_item_list in enumerate(level):
             for level_item in level_item_list:
-                if level_item is not None:
-                    level_item.rect.topleft = (j * 86 + camera.offset.x, i * 86 + camera.offset.y)
-                    level_item.pos = (j, i)
-                    level_item.start(opt_lvl_map)
+                if level_item is None:
+                    continue
+                level_item.rect.topleft = (j * 86 + camera.offset.x, i * 86 + camera.offset.y)
+                level_item.pos = (j, i)
+                level_item.start(opt_lvl_map)
 
 
 def update():
+    player.update(level_maps, player)
     for level_item in level_maps[1]:
         level_item.update(level_maps, player)
-    camera.box_camera(player.rect)
+    for destroy_item in destroy:
+        level_maps[1].remove(destroy_item)
+        level_maps[2].remove(destroy_item)
+        destroy.remove(destroy_item)
 
 
 def load_map():
@@ -83,7 +93,7 @@ def load_map():
                            level_list if level_block is not None]
     sorted_level_map = sorted((x for x in optimized_level_map if x is not None), key=lambda x: x.layer)
     camera.offset = pygame.Vector2()
-    start(level_map1, optimized_level_map, data[0])
+    start(level_map1, optimized_level_map, sorted_level_map, data[0])
     level_maps = level_map1, optimized_level_map, sorted_level_map
     update()
 
@@ -101,3 +111,21 @@ def level_data():
 
 player = None
 level_maps = None
+
+
+class Data:
+    data = []
+
+    @staticmethod
+    def read_data():
+        Data.data = [data.strip() for data in open("/home/skajland/Downloads/Labirynt 3/data/data").readlines()]
+
+    @staticmethod
+    def write_data(index, value):
+        Data.data[index] = value
+        fixed_data = [data + "\n" for data in Data.data]
+        with open("/home/skajland/Downloads/Labirynt 3/data/data", 'w') as file:
+            file.writelines(fixed_data)
+
+
+Data.read_data()

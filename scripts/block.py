@@ -12,7 +12,7 @@ class Block:
         self.was_on_item = False
 
     def update(self, level_maps, player):
-        self.rect.topleft = (self.pos[0] * 86 + camera.offset.x, self.pos[1] * 86 + camera.offset.y)
+        self.rect.topleft = (self.pos[0] * 86, self.pos[1] * 86) + camera.offset
 
     def copy(self):
         new_block = Block(self.img, self.walkable, self.layer)
@@ -31,7 +31,7 @@ class WinBlock(Block):
         super().update(level_maps, player)
         if self.was_on_item:
             leveloader.load_map()
-        
+
     def copy(self):
         new_block = WinBlock(self.img, self.walkable, self.layer)
         return new_block
@@ -107,13 +107,39 @@ class Key(Block):
     def __init__(self, img, walkable, layer, key):
         super().__init__(img, walkable, layer)
         self.key = key
+        self.destroying = False
 
     def update(self, level_maps, player):
+        if self.was_on_item and not self.destroying:
+            leveloader.destroy.append(self)
+            self.destroying = True
+            return
         super().update(level_maps, player)
-        if self.was_on_item:
-            level_maps[2].remove(self)
-            level_maps[1].remove(self)
 
     def copy(self):
         new_block = Key(self.img, self.walkable, self.layer, self.key)
         return new_block
+
+
+class Coins(Block):
+    def __init__(self, img, walkable, layer, data_index):
+        self.data_index = data_index
+        if leveloader.Data.data[data_index] == "True":
+            return
+        super().__init__(img, walkable, layer)
+
+    def update(self, level_maps, player):
+        super().update(self, player)
+        if self.was_on_item:
+            level_maps[2].remove(self)
+            level_maps[1].remove(self)
+            leveloader.Data.write_data(self.data_index, "True")
+            return
+
+    def render(self, screen):
+        super().render(screen)
+
+    def copy(self):
+        if leveloader.Data.data[self.data_index] == "True":
+            return
+        return Coins(self.img, self.walkable, self.layer, self.data_index)

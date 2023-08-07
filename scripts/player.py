@@ -70,6 +70,7 @@ class Player:
 
     def update(self, level_maps, player):
         self.movement(level_maps[2])
+        camera.box_camera(player.rect)
 
     def start(self, _):
         pass
