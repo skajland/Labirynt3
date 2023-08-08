@@ -67,9 +67,10 @@ class Boss(Enemy):
     def update(self, _, player):
         super().update(_, player)
         self.shoot_at_player()
+        camera_size = camera.screen_size[0] / 2, camera.screen_size[1] / 2
         for debris in self.all_debris:
             debris.update(_, player)
-            if debris.time_till_spawn > 25:
+            if debris.time_till_spawn > 10 and camera.rect_checker(debris.rect, debris.image_rot.get_size() + camera_size):
                 self.all_debris.remove(debris)
 
     def render(self, screen):
@@ -82,10 +83,12 @@ class Boss(Enemy):
             return
         self.time += 0.05
         current_difficulty = leveloader.difficulty_multiplier[leveloader.current_difficulty]
-        if self.time >= 10 - (current_difficulty + current_difficulty) * 4:
+        if self.time >= 10 - (current_difficulty + 1) * 4:
             rot_rect = self.image_rot.get_rect()
             rot_rect.topleft = self.rect.topleft
-            self.all_debris.append(block.Debris(pygame.image.load("res/blocks/coins.png").copy(), True, 2, self.angle,
+            self.all_debris.append(block.Debris((pygame.transform.scale(pygame.image.load("res/blocks/Table.png"), (96, 96)),
+                                                 pygame.transform.scale(pygame.image.load("res/blocks/Toilet.png"), (96, 96)),
+                                                 pygame.transform.scale(pygame.image.load("res/blocks/Knife.png"), (96, 96))), True, 2, self.angle,
                                                 pygame.Vector2(rot_rect.centerx, rot_rect.centery) - camera.offset.copy()).copy())
             self.time = 0
 

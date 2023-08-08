@@ -39,7 +39,6 @@ class Button:
         self.mouse_down = False
 
     def render(self, screen):
-
         if self.isimage:
             surf = pygame.Surface((self.rect.w, self.rect.h)).convert_alpha()
             screen.blit(self.image, self.rect)
