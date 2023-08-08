@@ -1,3 +1,8 @@
+import math
+import random
+
+import pygame
+
 import camera
 import leveloader
 
@@ -143,3 +148,19 @@ class Coins(Block):
         if leveloader.Data.data[self.data_index] == "True":
             return
         return Coins(self.img, self.walkable, self.layer, self.data_index)
+
+
+class Debris(Block):
+    def __init__(self, img, walkable, layer, angle):
+        super().__init__(img, walkable, layer)
+        self.angle = angle
+        self.speed = random.random() * 2
+        self.debris_offset = pygame.Vector2()
+
+    def update(self, level_maps, player):
+        self.rect.topleft = (self.pos[0] * 86, self.pos[1] * 86) + camera.offset + self.debris_offset
+        self.move_debris()
+
+    def move_debris(self):
+        self.debris_offset.x += math.cos(self.angle) * self.speed
+        self.debris_offset.y += math.sin(self.angle) * self.speed

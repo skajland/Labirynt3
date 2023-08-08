@@ -8,8 +8,8 @@ import gamestate
 
 class Enemy:
 
-    def __init__(self, scale, speed):
-        self.image = pygame.transform.scale(pygame.image.load("res/enemy.png"), scale)
+    def __init__(self, img, speed):
+        self.image = img
         self.image_rot = self.image.copy()
         self.angle = 0.0
         self.rect = self.image.get_rect()
@@ -28,8 +28,7 @@ class Enemy:
         return math.atan2(dist_y, dist_x)
 
     def copy(self):
-        new_enemy = Enemy(self.image.get_size(), self.speed)
-        return new_enemy
+        return Enemy(self.image, self.speed)
 
     def move_to_player(self, angle):
         self.enemy_pos.x += math.cos(angle) * self.speed * leveloader.difficulty_multiplier[leveloader.current_difficulty]
@@ -55,3 +54,24 @@ class Enemy:
     def start(self, _):
         if self.enemy_pos is None:
             self.enemy_pos = pygame.Vector2(self.pos[0] * 86, self.pos[1] * 86)
+
+
+class Boss(Enemy):
+    def __init__(self, img, speed):
+        super().__init__(img, speed)
+        self.time = 0
+
+    def update(self, _, player):
+        super().update(_, player)
+        self.shoot_at_player()
+
+    def shoot_at_player(self):
+        if leveloader.difficulty_multiplier[leveloader.current_difficulty] == 0:
+            return
+        self.time += 0.05
+        if self.time >= 10 - leveloader.difficulty_multiplier[leveloader.current_difficulty] * 3:
+            print("shoot")
+            self.time = 0
+
+    def copy(self):
+        return Boss(self.image, self.speed)
