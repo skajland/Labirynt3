@@ -1,5 +1,5 @@
 import math
-import random
+import gamestate
 
 import pygame
 
@@ -151,15 +151,38 @@ class Coins(Block):
 
 
 class Debris(Block):
-    def __init__(self, img, walkable, layer, angle):
+    def __init__(self, img, walkable, layer, angle, pos):
         super().__init__(img, walkable, layer)
         self.angle = angle
-        self.speed = random.random() * 2
+        self.speed = 6
         self.debris_offset = pygame.Vector2()
+        self.enemy_pos = pos
+        self.image_rot = pygame.transform.rotate(self.img, -math.degrees(self.angle))
+        self.time_till_spawn = 0
 
     def update(self, level_maps, player):
-        self.rect.topleft = (self.pos[0] * 86, self.pos[1] * 86) + camera.offset + self.debris_offset
+        self.collision(player)
+        self.time_till_spawn += 0.05
+        self.rect.topleft = (round(self.enemy_pos.x - self.image_rot.get_width() / 2 + camera.offset.x + self.debris_offset.x),
+                             round(self.enemy_pos.y - self.image_rot.get_height() / 2 + camera.offset.y + self.debris_offset.y))
         self.move_debris()
+
+    def calculate_angle(self, player):
+        dist_x = player.rect.centerx - self.enemy_pos.x - camera.offset.x
+        dist_y = player.rect.centery - self.enemy_pos.y - camera.offset.y
+        return math.atan2(dist_y, dist_x)
+
+    def render(self, screen):
+        screen.blit(self.image_rot, self.rect)
+
+    def collision(self, player):
+        mask = pygame.mask.from_surface(self.image_rot)
+        overlap_mask = player.mask.overlap_mask(mask, (self.rect.x - player.rect.x, self.rect.y - player.rect.y))
+        if overlap_mask.count() > 0:
+            gamestate.game_state = "DeathScreen"
+
+    def copy(self):
+        return Debris(self.img, self.walkable, self.layer, self.angle, self.enemy_pos)
 
     def move_debris(self):
         self.debris_offset.x += math.cos(self.angle) * self.speed

@@ -23,7 +23,7 @@ items_dict = {0: None,
               10: block.Block(pygame.transform.scale(pygame.image.load("res/blocks/sand.png"), (86, 86)), True, 1),
               11: block.Coins(pygame.transform.scale(pygame.image.load("res/blocks/coins.png"), (86, 86)), True, 2, 0),
               12: block.Coins(pygame.transform.scale(pygame.image.load("res/blocks/coins.png"), (86, 86)), True, 2, 1),
-              13: enemy.Boss(pygame.transform.scale(pygame.image.load("res/enemy.png"), (72, 92)), 3)}
+              13: enemy.Boss(pygame.transform.scale(pygame.image.load("res/enemy.png"), (72, 92)), 2)}
 
 original_levels = ('res/maps/map1/map', 'res/maps/map2/map', 'res/maps/map3/map', 'res/maps/map4/map', 'res/maps/map5/map')
 original_data = ('res/maps/map1/map_data', 'res/maps/map2/map_data', 'res/maps/map3/map_data', 'res/maps/map4/map_data', 'res/maps/map5/map_data')

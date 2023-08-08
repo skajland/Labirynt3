@@ -4,6 +4,7 @@ import camera
 import pygame
 import leveloader
 import gamestate
+import block
 
 
 class Enemy:
@@ -41,14 +42,15 @@ class Enemy:
             gamestate.game_state = "DeathScreen"
 
     def update(self, _, player):
+        self.point_at_player(leveloader.player)
         self.move_to_player(self.calculate_angle(player))
         self.collision(player)
+        self.rect.topleft = (round(self.enemy_pos.x - self.image.get_width() / 2 + camera.offset.x),
+                             round(self.enemy_pos.y - self.image.get_height() / 2 + camera.offset.y))
 
     def render(self, screen):
-        self.point_at_player(leveloader.player)
         rot_rect = self.image_rot.get_rect()
-        self.rect.topleft = (round(self.enemy_pos.x - self.image.get_width() / 2 - rot_rect.left + camera.offset.x),
-                             round(self.enemy_pos.y - self.image.get_height() / 2 - rot_rect.top + camera.offset.y))
+        rot_rect.topleft = self.rect.topleft
         screen.blit(self.image_rot, self.rect)
 
     def start(self, _):
@@ -60,17 +62,31 @@ class Boss(Enemy):
     def __init__(self, img, speed):
         super().__init__(img, speed)
         self.time = 0
+        self.all_debris = []
 
     def update(self, _, player):
         super().update(_, player)
         self.shoot_at_player()
+        for debris in self.all_debris:
+            debris.update(_, player)
+            if debris.time_till_spawn > 25:
+                self.all_debris.remove(debris)
+
+    def render(self, screen):
+        for debris in self.all_debris:
+            debris.render(screen)
+        super().render(screen)
 
     def shoot_at_player(self):
         if leveloader.difficulty_multiplier[leveloader.current_difficulty] == 0:
             return
         self.time += 0.05
-        if self.time >= 10 - leveloader.difficulty_multiplier[leveloader.current_difficulty] * 3:
-            print("shoot")
+        current_difficulty = leveloader.difficulty_multiplier[leveloader.current_difficulty]
+        if self.time >= 10 - (current_difficulty + current_difficulty) * 4:
+            rot_rect = self.image_rot.get_rect()
+            rot_rect.topleft = self.rect.topleft
+            self.all_debris.append(block.Debris(pygame.image.load("res/blocks/coins.png").copy(), True, 2, self.angle,
+                                                pygame.Vector2(rot_rect.centerx, rot_rect.centery) - camera.offset.copy()).copy())
             self.time = 0
 
     def copy(self):
