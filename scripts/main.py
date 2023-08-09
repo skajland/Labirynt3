@@ -8,7 +8,7 @@ import leveloader
 pygame.init()
 clock = pygame.time.Clock()
 
-screen = pygame.display.set_mode(camera.screen_size)
+screen = pygame.display.set_mode(camera.screen_size, pygame.FULLSCREEN)
 pygame.display.set_caption('Labirynt 3')
 start_button = Button("Play", (screen.get_width() / 2, screen.get_height() / 2), 96, (130, 130, 130, 70),
                       (75, 75, 75, 50), (160, 160, 160, 150))
