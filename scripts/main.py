@@ -5,6 +5,7 @@ import camera
 from button import Button
 import leveloader
 
+# I'm making this game at the beginning of 14 years.
 pygame.init()
 clock = pygame.time.Clock()
 
@@ -36,7 +37,6 @@ def update():
 
 
 def render():
-
     if gamestate.game_state == "Running":
         gamestate.Running.render(screen)
     elif gamestate.game_state == "MainMenu":

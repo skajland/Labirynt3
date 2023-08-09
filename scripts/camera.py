@@ -12,7 +12,7 @@ def box_camera(rect):
     global offset
     box_rect = pygame.Rect(left, top, screen_size[0] - (right + left), screen_size[1] - (bottom + top))
     if rect.left < box_rect.left:
-        rect.left -= 86
+        rect.left += 86
         offset.x += 86
     if rect.right > box_rect.right:
         rect.right -= 86
