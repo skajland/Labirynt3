@@ -1,4 +1,5 @@
 import camera
+import usefull
 import gamedata
 import pygame
 from player import Player
@@ -84,8 +85,6 @@ def update():
 
 def load_map():
     global player, background_color, level_maps, difficulty_multiplier, game_state
-    print(len(gamedata.levels))
-    print(gamedata.current_level)
     if len(gamedata.levels) <= gamedata.current_level:
         game_state = "YouWin"
         return
@@ -124,13 +123,13 @@ class Data:
 
     @staticmethod
     def read_data():
-        Data.data =[data.strip() for data in open("/home/skajland/Downloads/Labirynt 3/data/data").readlines()]
+        Data.data = [data.strip() for data in open(usefull.data_directory + "data").readlines()]
 
     @staticmethod
     def write_data(index, value):
         Data.data[index] = value
         fixed_data = [data + "\n" for data in Data.data]
-        with open("/home/skajland/Downloads/Labirynt 3/data/data", 'w') as file:
+        with open(usefull.data_directory + "data", 'w') as file:
             file.writelines(fixed_data)
 
 

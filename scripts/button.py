@@ -33,10 +33,12 @@ class Button:
 
     def collision_checker(self, func):
         global pressed
-        if pygame.mouse.get_pressed()[0] and not pressed:
+        if pygame.mouse.get_pressed()[0]:
+            self.button_state = "Pressed"
+            if pressed:
+                return
             pressed = True
             func(*self.func_arguments)
-            self.button_state = "Pressed"
             self.mouse_down = True
             return
         elif not pygame.mouse.get_pressed()[0] and pressed:

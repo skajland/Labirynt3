@@ -1,11 +1,12 @@
 import pygame
 import camera
+import usefull
 keys_pressed = []
 
 
 class Player:
     def __init__(self):
-        self.image = pygame.transform.scale(pygame.image.load("res/Player.png"), (86, 86))
+        self.image = pygame.transform.scale(pygame.image.load(usefull.data_directory + "res/Player.png"), (86, 86))
         self.rect = self.image.get_rect()
         self.layer = 3
         self.pos = (0, 0)

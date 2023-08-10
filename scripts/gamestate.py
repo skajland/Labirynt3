@@ -101,7 +101,7 @@ class WorkShop:
     sub_folders = []
     workshop_offset = pygame.Vector2()
     scale = (64, 64)
-    menu_button = usefull.create_button(pygame.transform.scale(pygame.image.load("res/ExitButton.png"), scale),
+    menu_button = usefull.create_button(pygame.transform.scale(pygame.image.load(usefull.data_directory + "res/ExitButton.png"), scale),
                                         pygame.Vector2(scale[0] / 2, scale[1] / 2), 128)
 
     @staticmethod
