@@ -1,12 +1,11 @@
 import math
 import random
 
-import gamestate
-
 import pygame
 
 import camera
 import leveloader
+import usefull
 
 
 class Block:
@@ -241,7 +240,7 @@ class Turret(Block):
             rot_rect = self.gun_img_rot.get_rect()
             rot_rect.topleft = self.rect.topleft
             self.all_debris.append(
-                Debris((pygame.transform.scale(pygame.image.load("res/blocks/bullet.png"), (64, 64)),), True, 2,
+                Debris((pygame.transform.scale(pygame.image.load(usefull.data_directory + "res/blocks/bullet.png"), (64, 64)),), True, 2,
                        self.angle,
                        pygame.Vector2(self.rect.centerx, self.rect.centery) - camera.offset.copy(), -math.degrees(self.angle)).copy())
             self.time = 0

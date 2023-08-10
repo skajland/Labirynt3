@@ -106,8 +106,8 @@ class WorkShop:
 
     @staticmethod
     def detect_sub_folders():
-        sub_folders = [folder for folder in os.listdir("Workshop/") if
-                       os.path.isdir("Workshop/" + folder)]
+        sub_folders = [folder for folder in os.listdir(usefull.data_directory + "Workshop/") if
+                       os.path.isdir(usefull.data_directory + "Workshop/" + folder)]
         return sub_folders
 
     @staticmethod
@@ -142,10 +142,10 @@ class WorkShop:
 
     @staticmethod
     def load_collection(collection):
-        collection_path = [folder for folder in os.listdir("Workshop/" + collection) if
-                           os.path.isdir("Workshop/" + collection + "/" + folder)]
-        levels_path = ["Workshop/" + collection + "/" + level_path + "/level" for level_path in collection_path]
-        levels_data_path = ["Workshop/" + collection + "/" + level_path + "/leveldata" for level_path in
+        collection_path = [folder for folder in os.listdir(usefull.data_directory + "Workshop/" + collection) if
+                           os.path.isdir(usefull.data_directory + "Workshop/" + collection + "/" + folder)]
+        levels_path = [usefull.data_directory + "Workshop/" + collection + "/" + level_path + "/level" for level_path in collection_path]
+        levels_data_path = [usefull.data_directory + "Workshop/" + collection + "/" + level_path + "/leveldata" for level_path in
                             collection_path]
         if len(levels_path) <= 0 or len(levels_data_path) <= 0:
             return

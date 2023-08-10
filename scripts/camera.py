@@ -32,3 +32,11 @@ def rect_checker(rect, size_offset):
     if rect.left < box_rect.left or rect.right > box_rect.right or rect.top < box_rect.top or rect.bottom > box_rect.bottom:
         return True
     return False
+
+
+def rect_checker_screen(rect):
+    global offset
+    box_rect = pygame.Rect(0, 0, screen_size[0], screen_size[1])
+    if rect.left < box_rect.left or rect.right > box_rect.right or rect.top < box_rect.top or rect.bottom > box_rect.bottom:
+        return True
+    return False

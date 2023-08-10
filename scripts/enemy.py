@@ -3,8 +3,8 @@ import math
 import camera
 import pygame
 import leveloader
-import gamestate
 import block
+import usefull
 
 
 class Enemy:
@@ -86,9 +86,9 @@ class Boss(Enemy):
         if self.time >= 10 - (current_difficulty + 1) * 4:
             rot_rect = self.image_rot.get_rect()
             rot_rect.topleft = self.rect.topleft
-            self.all_debris.append(block.Debris((pygame.transform.scale(pygame.image.load("res/blocks/Table.png"), (96, 96)),
-                                                 pygame.transform.scale(pygame.image.load("res/blocks/Toilet.png"), (96, 96)),
-                                                 pygame.transform.scale(pygame.image.load("res/blocks/Knife.png"), (96, 96))), True, 2, self.angle,
+            self.all_debris.append(block.Debris((pygame.transform.scale(pygame.image.load(usefull.data_directory + "res/blocks/Table.png"), (96, 96)),
+                                                 pygame.transform.scale(pygame.image.load(usefull.data_directory + "res/blocks/Toilet.png"), (96, 96)),
+                                                 pygame.transform.scale(pygame.image.load(usefull.data_directory + "res/blocks/Knife.png"), (96, 96))), True, 2, self.angle,
                                                 pygame.Vector2(rot_rect.centerx, rot_rect.centery) - camera.offset.copy()).copy())
             self.time = 0
 

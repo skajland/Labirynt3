@@ -42,9 +42,6 @@ def level_loader(file_raw, object_dict):
 
 def render_level(screen):
     for level in level_maps[2]:
-        if hasattr(level, 'img'):
-            if level.img is None:
-                continue
         level.render(screen)
 
 
