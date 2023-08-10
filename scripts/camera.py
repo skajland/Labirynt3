@@ -9,7 +9,7 @@ screen_size = pygame.display.get_desktop_sizes()[0]
 
 
 def box_camera(rect):
-    global offset
+    global offset, left, top, right, bottom
     box_rect = pygame.Rect(left, top, screen_size[0] - (right + left), screen_size[1] - (bottom + top))
     if rect.left < box_rect.left:
         rect.left += 86

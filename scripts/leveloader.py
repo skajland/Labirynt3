@@ -55,7 +55,6 @@ def start(lvl_map, opt_lvl_map, sorted_lvl_map, data):
                     continue
                 opt_lvl_map.remove(level_item)
                 player = level_item
-                print(camera.offset)
                 camera.offset = pygame.math.Vector2(
                     camera.screen_size[0] / 2 - player.image.get_width() / 2 - (j * 86 + camera.offset.x) + data[0],
                     camera.screen_size[1] / 2 - player.image.get_height() / 2 - (i * 86 + camera.offset.y) + data[1])

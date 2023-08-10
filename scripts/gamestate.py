@@ -6,6 +6,7 @@ import gamedata
 import leveloader
 
 game_state = "MainMenu"
+font = pygame.font.Font(None, 172)
 
 
 class Running:
@@ -36,6 +37,7 @@ class MainMenu:
         usefull.create_button("Medium", pygame.Vector2(camera.screen_size[0] / 2, camera.screen_size[1] / 2), 96, 1),
         usefull.create_button("Hard", pygame.Vector2(camera.screen_size[0] / 2 + 250, camera.screen_size[1] / 2), 96,
                               2)]
+    font_rendered = font.render("Labirynt 3", True, (20, 165, 20))
     workshop_enabled = False
 
     @staticmethod
@@ -75,6 +77,7 @@ class MainMenu:
         if MainMenu.workshop_enabled:
             WorkShop.render(screen)
             return
+        screen.blit(MainMenu.font_rendered, (screen.get_width() / 2 - MainMenu.font_rendered.get_width() / 2, 100))
         MainMenu.PlayButton.render(screen)
         MainMenu.Workshop.render(screen)
         MainMenu.ExitButton.render(screen)
@@ -100,6 +103,8 @@ class MainMenu:
 class WorkShop:
     sub_folders = []
     workshop_offset = pygame.Vector2()
+    menu_button = usefull.create_button("Menu",
+                                        pygame.Vector2(camera.screen_size[0] / 2, camera.screen_size[1] / 2 + 60), 128)
 
     @staticmethod
     def detect_sub_folders():
@@ -110,6 +115,7 @@ class WorkShop:
     @staticmethod
     def update():
         WorkShop.sub_folders = WorkShop.detect_sub_folders()
+        #WorkShop.menu_button.collision()
 
     @staticmethod
     def event_update(event):
@@ -125,7 +131,8 @@ class WorkShop:
     @staticmethod
     def render(screen):
         for i, sub_folder in enumerate(WorkShop.sub_folders):
-            collection_button = usefull.create_button(sub_folder, pygame.Vector2(screen.get_width() / 2, 96 * (i + 1)) + WorkShop.workshop_offset,
+            collection_button = usefull.create_button(sub_folder, pygame.Vector2(screen.get_width() / 2, 96 * (
+                        i + 1)) + WorkShop.workshop_offset,
                                                       96, sub_folder)
             collection_button.collision(WorkShop.load_collection)
             collection_button.render(screen)
@@ -159,6 +166,7 @@ class DeathScreen:
                                        pygame.Vector2(camera.screen_size[0] / 2, camera.screen_size[1] / 2 - 60), 128)
     MenuButton = usefull.create_button("Menu",
                                        pygame.Vector2(camera.screen_size[0] / 2, camera.screen_size[1] / 2 + 60), 128)
+    font_rendered = font.render("Zginoles", True, (20, 165, 20))
 
     @staticmethod
     def update():
@@ -180,5 +188,7 @@ class DeathScreen:
     @staticmethod
     def render(screen):
         screen.fill(leveloader.background_color)
+        screen.blit(DeathScreen.font_rendered,
+                    (screen.get_width() / 2 - DeathScreen.font_rendered.get_width() / 2, 100))
         DeathScreen.PlayButton.render(screen)
         DeathScreen.MenuButton.render(screen)

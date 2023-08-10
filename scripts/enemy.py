@@ -45,8 +45,8 @@ class Enemy:
         self.point_at_player(leveloader.player)
         self.move_to_player(self.calculate_angle(player))
         self.collision(player)
-        self.rect.topleft = (round(self.enemy_pos.x - self.image.get_width() / 2 + camera.offset.x),
-                             round(self.enemy_pos.y - self.image.get_height() / 2 + camera.offset.y))
+        self.rect.topleft = (round(self.enemy_pos.x - self.image_rot.get_width() / 2 + camera.offset.x),
+                             round(self.enemy_pos.y - self.image_rot.get_height() / 2 + camera.offset.y))
 
     def render(self, screen):
         rot_rect = self.image_rot.get_rect()
