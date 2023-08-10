@@ -152,6 +152,17 @@ class Coins(Block):
         return Coins(self.img, self.walkable, self.layer, self.data_index)
 
 
+class Lava(Block):
+
+    def update(self, level_maps, player):
+        super().update(level_maps, player)
+        if self.was_on_item:
+            leveloader.game_state = "DeathScreen"
+
+    def copy(self):
+        return Lava(self.img, self.walkable, self.layer)
+
+
 class Debris(Block):
     def __init__(self, images, walkable, layer, angle, pos, img_rotation=None):
         img_index = random.randint(0, len(images)) - 1
@@ -182,7 +193,7 @@ class Debris(Block):
         mask = pygame.mask.from_surface(self.image_rot)
         overlap_mask = player.mask.overlap_mask(mask, (self.rect.x - player.rect.x, self.rect.y - player.rect.y))
         if overlap_mask.count() > 0:
-            gamestate.game_state = "DeathScreen"
+            leveloader.game_state = "DeathScreen"
 
     def copy(self):
         return Debris([self.img], self.walkable, self.layer, self.angle, self.enemy_pos, self.img_rotation)

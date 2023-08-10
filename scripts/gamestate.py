@@ -5,7 +5,6 @@ import camera
 import gamedata
 import leveloader
 
-game_state = "MainMenu"
 font = pygame.font.Font(None, 172)
 
 
@@ -64,8 +63,7 @@ class MainMenu:
 
     @staticmethod
     def game_exit():
-        global game_state
-        game_state = "Quitting"
+        leveloader.game_state = "Quitting"
 
     @staticmethod
     def change_difficulty(*multiplier):
@@ -92,19 +90,19 @@ class MainMenu:
 
     @staticmethod
     def change_game_state():
-        global game_state
         gamedata.levels = gamedata.original_levels
         gamedata.levels_data = gamedata.original_data
         gamedata.current_level = 0
         leveloader.load_map()
-        game_state = "Running"
+        leveloader.game_state = "Running"
 
 
 class WorkShop:
     sub_folders = []
     workshop_offset = pygame.Vector2()
-    menu_button = usefull.create_button("Menu",
-                                        pygame.Vector2(camera.screen_size[0] / 2, camera.screen_size[1] / 2 + 60), 128)
+    scale = (64, 64)
+    menu_button = usefull.create_button(pygame.transform.scale(pygame.image.load("res/ExitButton.png"), scale),
+                                        pygame.Vector2(scale[0] / 2, scale[1] / 2), 128)
 
     @staticmethod
     def detect_sub_folders():
@@ -115,7 +113,11 @@ class WorkShop:
     @staticmethod
     def update():
         WorkShop.sub_folders = WorkShop.detect_sub_folders()
-        #WorkShop.menu_button.collision()
+        WorkShop.menu_button.collision(WorkShop.menu)
+
+    @staticmethod
+    def menu():
+        MainMenu.workshop_enabled = False
 
     @staticmethod
     def event_update(event):
@@ -136,10 +138,10 @@ class WorkShop:
                                                       96, sub_folder)
             collection_button.collision(WorkShop.load_collection)
             collection_button.render(screen)
+        WorkShop.menu_button.render(screen)
 
     @staticmethod
     def load_collection(collection):
-        global game_state
         collection_path = [folder for folder in os.listdir("Workshop/" + collection) if
                            os.path.isdir("Workshop/" + collection + "/" + folder)]
         levels_path = ["Workshop/" + collection + "/" + level_path + "/level" for level_path in collection_path]
@@ -157,7 +159,7 @@ class WorkShop:
         gamedata.levels = levels_path
         gamedata.levels_data = levels_data_path
         leveloader.load_map()
-        game_state = "Running"
+        leveloader.game_state = "Running"
         MainMenu.workshop_enabled = False
 
 
@@ -175,15 +177,13 @@ class DeathScreen:
 
     @staticmethod
     def menu():
-        global game_state
-        game_state = "MainMenu"
+        leveloader.game_state = "MainMenu"
 
     @staticmethod
     def reset_game():
-        global game_state
         gamedata.current_level = 0
         leveloader.load_map()
-        game_state = "Running"
+        leveloader.game_state = "Running"
 
     @staticmethod
     def render(screen):
@@ -192,3 +192,34 @@ class DeathScreen:
                     (screen.get_width() / 2 - DeathScreen.font_rendered.get_width() / 2, 100))
         DeathScreen.PlayButton.render(screen)
         DeathScreen.MenuButton.render(screen)
+
+
+class YouWin:
+    PlayButton = usefull.create_button("Graj",
+                                       pygame.Vector2(camera.screen_size[0] / 2, camera.screen_size[1] / 2 - 60), 128)
+    MenuButton = usefull.create_button("Menu",
+                                       pygame.Vector2(camera.screen_size[0] / 2, camera.screen_size[1] / 2 + 60), 128)
+    font_rendered = font.render("Wygrales", True, (20, 165, 20))
+
+    @staticmethod
+    def update():
+        YouWin.PlayButton.collision(DeathScreen.reset_game)
+        YouWin.MenuButton.collision(DeathScreen.menu)
+
+    @staticmethod
+    def menu():
+        leveloader.game_state = "MainMenu"
+
+    @staticmethod
+    def reset_game():
+        gamedata.current_level = 0
+        leveloader.load_map()
+        leveloader.game_state = "Running"
+
+    @staticmethod
+    def render(screen):
+        screen.fill(leveloader.background_color)
+        screen.blit(YouWin.font_rendered,
+                    (screen.get_width() / 2 - YouWin.font_rendered.get_width() / 2, 100))
+        YouWin.PlayButton.render(screen)
+        YouWin.MenuButton.render(screen)

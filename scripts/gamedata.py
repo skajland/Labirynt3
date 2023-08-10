@@ -25,10 +25,11 @@ items_dict = {0: None,
               12: block.Coins(pygame.transform.scale(pygame.image.load("res/blocks/coins.png"), (86, 86)), True, 2, 1),
               13: enemy.Boss(pygame.transform.scale(pygame.image.load("res/enemy.png"), (72, 92)), 2),
               14: block.Turret(pygame.transform.scale(pygame.image.load("res/blocks/TurretBase.png"), (86, 86)), False, 2,
-                               pygame.transform.scale(pygame.image.load("res/blocks/TurretGun.png"), (86, 86)))}
+                               pygame.transform.scale(pygame.image.load("res/blocks/TurretGun.png"), (86, 86))),
+              15: block.Lava(pygame.transform.scale(pygame.image.load("res/blocks/Lava.png"), (86, 86)), True, 1)}
 
-original_levels = ('res/maps/map1/map', 'res/maps/map2/map', 'res/maps/map3/map', 'res/maps/map4/map', 'res/maps/map5/map')
-original_data = ('res/maps/map1/map_data', 'res/maps/map2/map_data', 'res/maps/map3/map_data', 'res/maps/map4/map_data', 'res/maps/map5/map_data')
+original_levels = ('res/maps/map1/map', 'res/maps/map2/map', 'res/maps/map3/map')
+original_data = ('res/maps/map1/map_data', 'res/maps/map2/map_data', 'res/maps/map3/map_data')
 
 levels = []
 levels_data = []

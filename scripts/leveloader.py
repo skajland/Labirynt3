@@ -6,6 +6,7 @@ background_color = (105, 200, 75)
 difficulty_multiplier = 1
 current_difficulty = 1  # 0 = easy 1 = mid 2 = hard
 destroy = []
+game_state = "MainMenu"
 
 
 def copy_item(original_item):
@@ -82,7 +83,12 @@ def update():
 
 
 def load_map():
-    global player, background_color, level_maps, difficulty_multiplier
+    global player, background_color, level_maps, difficulty_multiplier, game_state
+    print(len(gamedata.levels))
+    print(gamedata.current_level)
+    if len(gamedata.levels) <= gamedata.current_level:
+        game_state = "YouWin"
+        return
     data = level_data()
     camera.left, camera.top, camera.right, camera.bottom = data[2]
     background_color = data[1]

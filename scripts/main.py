@@ -28,28 +28,32 @@ def update():
                 leveloader.load_map()
         gamestate.WorkShop.event_update(event)
 
-    if gamestate.game_state == "Running":
+    if leveloader.game_state == "Running":
         gamestate.Running.update()
-    elif gamestate.game_state == "MainMenu":
+    elif leveloader.game_state == "MainMenu":
         gamestate.MainMenu.update()
-    elif gamestate.game_state == "DeathScreen":
+    elif leveloader.game_state == "DeathScreen":
         gamestate.DeathScreen.update()
+    elif leveloader.game_state == "YouWin":
+        gamestate.YouWin.update()
 
 
 def render():
-    if gamestate.game_state == "Running":
+    if leveloader.game_state == "Running":
         gamestate.Running.render(screen)
-    elif gamestate.game_state == "MainMenu":
+    elif leveloader.game_state == "MainMenu":
         gamestate.MainMenu.render(screen)
-    elif gamestate.game_state == "DeathScreen":
+    elif leveloader.game_state == "DeathScreen":
         gamestate.DeathScreen.render(screen)
+    elif leveloader.game_state == "YouWin":
+        gamestate.YouWin.render(screen)
     pygame.display.update()
 
 
 dt = 16666667
 currentime = time.time_ns()
 accumulator = 0.0
-while not gamestate.game_state == "Quitting":
+while not leveloader.game_state == "Quitting":
     clock.tick(120)
     newtime = time.time_ns()
     frametime = newtime - currentime

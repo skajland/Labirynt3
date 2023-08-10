@@ -39,7 +39,7 @@ class Enemy:
         mask = pygame.mask.from_surface(self.image_rot)
         overlap_mask = player.mask.overlap_mask(mask, (self.rect.x - player.rect.x, self.rect.y - player.rect.y))
         if overlap_mask.count() > 0:
-            gamestate.game_state = "DeathScreen"
+            leveloader.game_state = "DeathScreen"
 
     def update(self, _, player):
         self.point_at_player(leveloader.player)
