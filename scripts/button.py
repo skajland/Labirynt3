@@ -1,4 +1,5 @@
 import pygame
+import gamestate
 pygame.init()
 pressed = False
 
@@ -26,6 +27,8 @@ class Button:
 
     def collision(self, func):
         if self.rect.collidepoint(pygame.mouse.get_pos()):
+            if self.button_state == "None" and not self.mouse_down:
+                gamestate.button_highlight_sound.play()
             self.button_state = "Hovering"
             self.collision_checker(func)
         else:
@@ -38,6 +41,7 @@ class Button:
             if pressed:
                 return
             pressed = True
+            gamestate.button_press_sound.play()
             func(*self.func_arguments)
             self.mouse_down = True
             return

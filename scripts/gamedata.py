@@ -3,7 +3,6 @@ import enemy
 import usefull
 from player import Player
 import pygame
-print(usefull.data_directory + "res/blocks/grass.png")
 items_dict = {0: None,
               1: block.Block(pygame.transform.scale(pygame.image.load(usefull.data_directory + "res/blocks/grass.png"), (86, 86)), True, 1),
               2: enemy.Enemy(pygame.transform.scale(pygame.image.load(usefull.data_directory + "res/enemy.png"), (72, 92)), 3),

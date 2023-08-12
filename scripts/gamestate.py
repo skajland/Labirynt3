@@ -6,6 +6,10 @@ import gamedata
 import leveloader
 
 font = pygame.font.Font(None, 172)
+mainMenuMusic = pygame.mixer.Sound(usefull.data_directory + "Music/MainMenuMusic.wav")
+mainMenuMusic.play(-1)
+button_highlight_sound = pygame.mixer.Sound(usefull.data_directory + "Music/ButtonHighlight.wav")
+button_press_sound = pygame.mixer.Sound(usefull.data_directory + "Music/ButtonPress.wav")
 
 
 class Running:
@@ -95,6 +99,7 @@ class MainMenu:
         gamedata.current_level = 0
         leveloader.load_map()
         leveloader.game_state = "Running"
+        mainMenuMusic.stop()
 
 
 class WorkShop:
@@ -103,6 +108,7 @@ class WorkShop:
     scale = (64, 64)
     menu_button = usefull.create_button(pygame.transform.scale(pygame.image.load(usefull.data_directory + "res/ExitButton.png"), scale),
                                         pygame.Vector2(scale[0] / 2, scale[1] / 2), 128)
+    collection_buttons = []
 
     @staticmethod
     def detect_sub_folders():
@@ -114,6 +120,20 @@ class WorkShop:
     def update():
         WorkShop.sub_folders = WorkShop.detect_sub_folders()
         WorkShop.menu_button.collision(WorkShop.menu)
+        WorkShop.update_buttons()
+
+    @staticmethod
+    def update_buttons():
+        if len(WorkShop.collection_buttons) <= 0:
+            WorkShop.collection_buttons_create()
+        for button in WorkShop.collection_buttons:
+            button.collision(WorkShop.load_collection)
+
+    @staticmethod
+    def collection_buttons_create():
+        for i, sub_folder in enumerate(WorkShop.sub_folders):
+            WorkShop.collection_buttons.append(usefull.create_button(sub_folder, pygame.Vector2(camera.screen_size[0] / 2, 96 * (
+                        i + 1)) + WorkShop.workshop_offset, 96, sub_folder))
 
     @staticmethod
     def menu():
@@ -132,13 +152,9 @@ class WorkShop:
 
     @staticmethod
     def render(screen):
-        for i, sub_folder in enumerate(WorkShop.sub_folders):
-            collection_button = usefull.create_button(sub_folder, pygame.Vector2(screen.get_width() / 2, 96 * (
-                        i + 1)) + WorkShop.workshop_offset,
-                                                      96, sub_folder)
-            collection_button.collision(WorkShop.load_collection)
-            collection_button.render(screen)
         WorkShop.menu_button.render(screen)
+        for button in WorkShop.collection_buttons:
+            button.render(screen)
 
     @staticmethod
     def load_collection(collection):
@@ -161,6 +177,7 @@ class WorkShop:
         leveloader.load_map()
         leveloader.game_state = "Running"
         MainMenu.workshop_enabled = False
+        mainMenuMusic.stop()
 
 
 class DeathScreen:
@@ -177,6 +194,7 @@ class DeathScreen:
 
     @staticmethod
     def menu():
+        mainMenuMusic.play(-1)
         leveloader.game_state = "MainMenu"
 
     @staticmethod
@@ -208,6 +226,7 @@ class YouWin:
 
     @staticmethod
     def menu():
+        mainMenuMusic.play(-1)
         leveloader.game_state = "MainMenu"
 
     @staticmethod
