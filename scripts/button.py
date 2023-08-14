@@ -1,12 +1,18 @@
 import pygame
-import gamestate
+import usefull
 pygame.init()
 pressed = False
 
 
+def holding_press():
+    global pressed
+    pressed = pygame.mouse.get_pressed()[0]
+
+
 class Button:
 
-    def __init__(self, what_to_say, pos, font_size, default_color, button_hovering_color, button_pressed_color, *func_arguments):
+    def __init__(self, what_to_say, pos, font_size, default_color, button_hovering_color, button_pressed_color,
+                 *func_arguments):
         self.func_arguments = func_arguments
         self.default_color = default_color
         self.button_hovering_color = button_hovering_color
@@ -27,8 +33,8 @@ class Button:
 
     def collision(self, func):
         if self.rect.collidepoint(pygame.mouse.get_pos()):
-            if self.button_state == "None" and not self.mouse_down:
-                gamestate.button_highlight_sound.play()
+            if self.button_state == "None":
+                usefull.button_highlight_sound.play()
             self.button_state = "Hovering"
             self.collision_checker(func)
         else:
@@ -40,13 +46,10 @@ class Button:
             self.button_state = "Pressed"
             if pressed:
                 return
-            pressed = True
-            gamestate.button_press_sound.play()
+            usefull.button_press_sound.play()
             func(*self.func_arguments)
             self.mouse_down = True
             return
-        elif not pygame.mouse.get_pressed()[0] and pressed:
-            pressed = False
         self.mouse_down = False
 
     def render(self, screen):

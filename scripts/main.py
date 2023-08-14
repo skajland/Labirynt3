@@ -2,7 +2,7 @@ import pygame
 import gamestate
 import time
 import camera
-from button import Button
+import button
 import leveloader
 
 # I'm making this game at the beginning of 14 years.
@@ -11,11 +11,11 @@ clock = pygame.time.Clock()
 
 screen = pygame.display.set_mode(camera.screen_size, pygame.FULLSCREEN)
 pygame.display.set_caption('Labirynt 3')
-start_button = Button("Play", (screen.get_width() / 2, screen.get_height() / 2), 96, (130, 130, 130, 70),
+start_button = button.Button("Play", (screen.get_width() / 2, screen.get_height() / 2), 96, (130, 130, 130, 70),
                       (75, 75, 75, 50), (160, 160, 160, 150))
-menu_button = Button("Menu", (screen.get_width() / 2, screen.get_height() / 2 + 96), 96, (130, 130, 130, 70),
+menu_button = button.Button("Menu", (screen.get_width() / 2, screen.get_height() / 2 + 96), 96, (130, 130, 130, 70),
                      (75, 75, 75, 50), (160, 160, 160, 150))
-exit_button = Button("Exit", (screen.get_width() / 2, screen.get_height() / 2 + 96), 96, (130, 130, 130, 70),
+exit_button = button.Button("Exit", (screen.get_width() / 2, screen.get_height() / 2 + 96), 96, (130, 130, 130, 70),
                      (75, 75, 75, 50), (160, 160, 160, 150))
 
 
@@ -36,6 +36,7 @@ def update():
         gamestate.DeathScreen.update()
     elif leveloader.game_state == "YouWin":
         gamestate.YouWin.update()
+    button.holding_press()
 
 
 def render():

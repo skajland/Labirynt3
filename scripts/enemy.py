@@ -86,6 +86,7 @@ class Boss(Enemy):
         if self.time >= 10 - (current_difficulty + 1) * 4:
             rot_rect = self.image_rot.get_rect()
             rot_rect.topleft = self.rect.topleft
+            usefull.turret_shoot_sound.play()
             self.all_debris.append(block.Debris((pygame.transform.scale(pygame.image.load(usefull.data_directory + "res/blocks/Table.png"), (96, 96)),
                                                  pygame.transform.scale(pygame.image.load(usefull.data_directory + "res/blocks/Toilet.png"), (96, 96)),
                                                  pygame.transform.scale(pygame.image.load(usefull.data_directory + "res/blocks/Knife.png"), (96, 96))), True, 2, self.angle,

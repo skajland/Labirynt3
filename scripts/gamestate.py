@@ -6,10 +6,6 @@ import gamedata
 import leveloader
 
 font = pygame.font.Font(None, 172)
-mainMenuMusic = pygame.mixer.Sound(usefull.data_directory + "Music/MainMenuMusic.wav")
-mainMenuMusic.play(-1)
-button_highlight_sound = pygame.mixer.Sound(usefull.data_directory + "Music/ButtonHighlight.wav")
-button_press_sound = pygame.mixer.Sound(usefull.data_directory + "Music/ButtonPress.wav")
 
 
 class Running:
@@ -99,7 +95,8 @@ class MainMenu:
         gamedata.current_level = 0
         leveloader.load_map()
         leveloader.game_state = "Running"
-        mainMenuMusic.stop()
+        usefull.mainMenuMusic.stop()
+        usefull.playingMusic.play(-1)
 
 
 class WorkShop:
@@ -177,7 +174,8 @@ class WorkShop:
         leveloader.load_map()
         leveloader.game_state = "Running"
         MainMenu.workshop_enabled = False
-        mainMenuMusic.stop()
+        usefull.mainMenuMusic.stop()
+        usefull.playingMusic.play(-1)
 
 
 class DeathScreen:
@@ -186,20 +184,36 @@ class DeathScreen:
     MenuButton = usefull.create_button("Menu",
                                        pygame.Vector2(camera.screen_size[0] / 2, camera.screen_size[1] / 2 + 60), 128)
     font_rendered = font.render("Zginoles", True, (20, 165, 20))
+    is_in_death_screen = False
 
     @staticmethod
     def update():
+        if not DeathScreen.is_in_death_screen:
+            usefull.playingMusic.stop()
+            usefull.DeathMusic.play(-1)
+        DeathScreen.is_in_death_screen = True
         DeathScreen.PlayButton.collision(DeathScreen.reset_game)
         DeathScreen.MenuButton.collision(DeathScreen.menu)
 
     @staticmethod
+    def activate_death_screen():
+        usefull.DeathMusic.play(-1)
+        usefull.playingMusic.stop()
+        leveloader.game_state = "DeathScreen"
+
+    @staticmethod
     def menu():
-        mainMenuMusic.play(-1)
+        DeathScreen.is_in_death_screen = False
+        usefull.mainMenuMusic.play(-1)
+        usefull.DeathMusic.stop()
         leveloader.game_state = "MainMenu"
 
     @staticmethod
     def reset_game():
+        DeathScreen.is_in_death_screen = False
         gamedata.current_level = 0
+        usefull.DeathMusic.stop()
+        usefull.playingMusic.play(-1)
         leveloader.load_map()
         leveloader.game_state = "Running"
 
@@ -226,8 +240,9 @@ class YouWin:
 
     @staticmethod
     def menu():
-        mainMenuMusic.play(-1)
+        usefull.mainMenuMusic.play(-1)
         leveloader.game_state = "MainMenu"
+        usefull.playingMusic.stop()
 
     @staticmethod
     def reset_game():

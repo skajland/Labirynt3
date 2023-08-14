@@ -243,6 +243,7 @@ class Turret(Block):
                 Debris((pygame.transform.scale(pygame.image.load(usefull.data_directory + "res/blocks/bullet.png"), (64, 64)),), True, 2,
                        self.angle,
                        pygame.Vector2(self.rect.centerx, self.rect.centery) - camera.offset.copy(), -math.degrees(self.angle)).copy())
+            usefull.turret_shoot_sound.play()
             self.time = 0
 
     def render(self, screen):
