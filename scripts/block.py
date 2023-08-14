@@ -137,6 +137,7 @@ class Coins(Block):
     def update(self, level_maps, player):
         super().update(self, player)
         if self.was_on_item:
+            usefull.coins_collect.play()
             level_maps[2].remove(self)
             level_maps[1].remove(self)
             leveloader.Data.write_data(self.data_index, "True")
