@@ -8,6 +8,7 @@ difficulty_multiplier = 1
 current_difficulty = 1  # 0 = easy 1 = mid 2 = hard
 destroy = []
 game_state = "MainMenu"
+all_debris = []
 
 
 def copy_item(original_item):
@@ -74,6 +75,8 @@ def update():
     player.update(level_maps, player)
     for level_item in level_maps[1]:
         level_item.update(level_maps, player)
+        if game_state != "Running":
+            return
     for destroy_item in destroy:
         level_maps[1].remove(destroy_item)
         level_maps[2].remove(destroy_item)
@@ -85,6 +88,7 @@ def load_map():
     if len(gamedata.levels) <= gamedata.current_level:
         game_state = "YouWin"
         return
+    destroy.clear()
     data = level_data()
     camera.left, camera.top, camera.right, camera.bottom = data[2]
     background_color = data[1]

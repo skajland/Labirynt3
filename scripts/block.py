@@ -221,7 +221,7 @@ class Turret(Block):
         camera_size = camera.screen_size[0] / 2, camera.screen_size[1] / 2
         for debris in self.all_debris:
             debris.update(level_maps, player)
-            if debris.time_till_spawn > 10 and camera.rect_checker(debris.rect,
+            if debris.time_till_spawn > 8 and camera.rect_checker(debris.rect,
                                                                    debris.image_rot.get_size() + camera_size):
                 self.all_debris.remove(debris)
 

@@ -6,7 +6,6 @@ import button
 import leveloader
 
 # I'm making this game at the beginning of 14 years.
-# - the placing of the code might be a bit off just learned I can avoid circular importing
 pygame.init()
 clock = pygame.time.Clock()
 

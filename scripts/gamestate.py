@@ -1,18 +1,31 @@
 import os
+import time
+
 import usefull
 import pygame.math
 import camera
 import gamedata
 import leveloader
 
+
 font = pygame.font.Font(None, 172)
+font_small = pygame.font.Font(None, 86)
+time_passed = 0
+current_time = 0
 
 
 class Running:
 
     @staticmethod
     def update():
+        global time_passed, current_time
+        if time_passed <= 0:
+            current_time = time.time()
         leveloader.update()
+        new_time = time.time()
+        dt = new_time - current_time
+        current_time = new_time
+        time_passed += dt
 
     @staticmethod
     def render(screen):
@@ -204,12 +217,14 @@ class DeathScreen:
     @staticmethod
     def menu():
         DeathScreen.is_in_death_screen = False
-        usefull.mainMenuMusic.play(-1)
         usefull.DeathMusic.stop()
+        usefull.mainMenuMusic.play(-1)
         leveloader.game_state = "MainMenu"
 
     @staticmethod
     def reset_game():
+        global time_passed
+        time_passed = 0
         DeathScreen.is_in_death_screen = False
         gamedata.current_level = 0
         usefull.DeathMusic.stop()
@@ -222,6 +237,8 @@ class DeathScreen:
         screen.fill(leveloader.background_color)
         screen.blit(DeathScreen.font_rendered,
                     (screen.get_width() / 2 - DeathScreen.font_rendered.get_width() / 2, 100))
+        time_font_rendered = font_small.render("Twuj Czas: " + str(round(time_passed, 2)), True, (20, 165, 20))
+        screen.blit(time_font_rendered, (screen.get_width() / 2 - time_font_rendered.get_width() / 2, 250))
         DeathScreen.PlayButton.render(screen)
         DeathScreen.MenuButton.render(screen)
 
@@ -235,17 +252,20 @@ class YouWin:
 
     @staticmethod
     def update():
-        YouWin.PlayButton.collision(DeathScreen.reset_game)
-        YouWin.MenuButton.collision(DeathScreen.menu)
+        YouWin.PlayButton.collision(YouWin.reset_game)
+        YouWin.MenuButton.collision(YouWin.menu)
 
     @staticmethod
     def menu():
+        usefull.DeathMusic.stop()
         usefull.mainMenuMusic.play(-1)
         leveloader.game_state = "MainMenu"
         usefull.playingMusic.stop()
 
     @staticmethod
     def reset_game():
+        global time_passed
+        time_passed = 0
         gamedata.current_level = 0
         leveloader.load_map()
         leveloader.game_state = "Running"
@@ -255,5 +275,7 @@ class YouWin:
         screen.fill(leveloader.background_color)
         screen.blit(YouWin.font_rendered,
                     (screen.get_width() / 2 - YouWin.font_rendered.get_width() / 2, 100))
+        time_font_rendered = font_small.render("Twuj Czas: " + str(round(time_passed, 2)), True, (20, 165, 20))
+        screen.blit(time_font_rendered, (screen.get_width() / 2 - time_font_rendered.get_width() / 2, 250))
         YouWin.PlayButton.render(screen)
         YouWin.MenuButton.render(screen)
