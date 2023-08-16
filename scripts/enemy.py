@@ -42,9 +42,9 @@ class Enemy:
             leveloader.game_state = "DeathScreen"
 
     def update(self, _, player):
+        self.collision(player)
         self.point_at_player(leveloader.player)
         self.move_to_player(self.calculate_angle(player))
-        self.collision(player)
         self.rect.topleft = (round(self.enemy_pos.x - self.image_rot.get_width() / 2 + camera.offset.x),
                              round(self.enemy_pos.y - self.image_rot.get_height() / 2 + camera.offset.y))
 

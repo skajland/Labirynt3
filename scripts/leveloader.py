@@ -88,7 +88,10 @@ def load_map():
     if len(gamedata.levels) <= gamedata.current_level:
         game_state = "YouWin"
         return
-    destroy.clear()
+    if level_maps is not None:
+        level_maps[0].clear()
+        level_maps[1].clear()
+        level_maps[2].clear()
     data = level_data()
     camera.left, camera.top, camera.right, camera.bottom = data[2]
     background_color = data[1]
