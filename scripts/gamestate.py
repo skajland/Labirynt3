@@ -31,6 +31,8 @@ class Running:
     def render(screen):
         screen.fill(leveloader.background_color)
         leveloader.render_level(screen)
+        level_rendered = font_small.render(str(gamedata.current_level), True, (30, 30, 30))
+        screen.blit(level_rendered, (screen.get_width() / 2 - level_rendered.get_width() / 2, 0))
 
 
 class MainMenu:
@@ -54,6 +56,8 @@ class MainMenu:
 
     @staticmethod
     def update():
+        global time_passed
+        time_passed = 0
         if MainMenu.workshop_enabled:
             WorkShop.update()
             return
@@ -182,6 +186,8 @@ class WorkShop:
             if not os.path.exists(level_data_path) or not os.path.isfile(level_data_path):
                 return
         gamedata.current_level = 0
+        levels_path.sort()
+        levels_data_path.sort()
         gamedata.levels = levels_path
         gamedata.levels_data = levels_data_path
         leveloader.load_map()
@@ -229,8 +235,8 @@ class DeathScreen:
         gamedata.current_level = 0
         usefull.DeathMusic.stop()
         usefull.playingMusic.play(-1)
-        leveloader.load_map()
         leveloader.game_state = "Running"
+        leveloader.load_map()
 
     @staticmethod
     def render(screen):
@@ -238,7 +244,9 @@ class DeathScreen:
         screen.blit(DeathScreen.font_rendered,
                     (screen.get_width() / 2 - DeathScreen.font_rendered.get_width() / 2, 100))
         time_font_rendered = font_small.render("Twuj Czas: " + str(round(time_passed, 2)), True, (20, 165, 20))
+        level_rendered = font_small.render("zginoles na levelu " + str(gamedata.current_level), True, (20, 165, 20))
         screen.blit(time_font_rendered, (screen.get_width() / 2 - time_font_rendered.get_width() / 2, 250))
+        screen.blit(level_rendered, (screen.get_width() / 2 - level_rendered.get_width() / 2, 320))
         DeathScreen.PlayButton.render(screen)
         DeathScreen.MenuButton.render(screen)
 
@@ -267,8 +275,8 @@ class YouWin:
         global time_passed
         time_passed = 0
         gamedata.current_level = 0
-        leveloader.load_map()
         leveloader.game_state = "Running"
+        leveloader.load_map()
 
     @staticmethod
     def render(screen):

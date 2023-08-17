@@ -17,6 +17,9 @@ button_press_sound = pygame.mixer.Sound(data_directory + "Sounds/ButtonPress.wav
 DeathMusic = pygame.mixer.Sound(data_directory + "Sounds/DeathMusic.wav")
 turret_shoot_sound = pygame.mixer.Sound(data_directory + "Sounds/TurretShoot.wav")
 coins_collect = pygame.mixer.Sound(data_directory + "Sounds/CoinsCollect.wav")
+key_pickup = pygame.mixer.Sound(data_directory + "Sounds/InteractKey.wav")
+door_unlock = pygame.mixer.Sound(data_directory + "Sounds/DoorUnlock.wav")
+win_sound = pygame.mixer.Sound(data_directory + "Sounds/WinBlockSound.wav")
 
 
 def create_button(what_to_say, pos, font_size, *func_arguments):

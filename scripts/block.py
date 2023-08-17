@@ -36,6 +36,7 @@ class WinBlock(Block):
     def update(self, level_maps, player):
         super().update(level_maps, player)
         if self.was_on_item:
+            usefull.win_sound.play()
             leveloader.load_map()
 
     def copy(self):
@@ -59,6 +60,7 @@ class EntranceBlock(Block):
                 self.was_on_item = False
                 return
         if self.was_on_item:
+            usefull.door_unlock.play()
             level_maps[2].remove(self)
             level_maps[1].remove(self)
             return
@@ -117,6 +119,7 @@ class Key(Block):
 
     def update(self, level_maps, player):
         if self.was_on_item and not self.destroying:
+            usefull.key_pickup.play()
             leveloader.destroy.append(self)
             self.destroying = True
             return

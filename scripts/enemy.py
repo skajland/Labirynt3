@@ -56,6 +56,9 @@ class Enemy:
     def start(self, _):
         if self.enemy_pos is None:
             self.enemy_pos = pygame.Vector2(self.pos[0] * 86, self.pos[1] * 86)
+        self.rect.topleft = (round(self.enemy_pos.x - self.image_rot.get_width() / 2 + camera.offset.x),
+                             round(self.enemy_pos.y - self.image_rot.get_height() / 2 + camera.offset.y))
+        self.point_at_player(leveloader.player)
 
 
 class Boss(Enemy):
